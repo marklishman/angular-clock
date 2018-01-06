@@ -23,7 +23,7 @@ export class StopwatchComponent implements OnInit {
       const millis = new Date().getTime();
       this.elapsedSeconds = Math.floor(millis / 1000) - this.startTimeSeconds;
       this.decisecond = Math.floor(millis / 100 % 10);
-    }, 1);
+    }, 100);
   }
 
   get elapsedTime(): Date {
