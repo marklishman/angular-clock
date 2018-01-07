@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       {{totalTime | date:'HH:mm:ss'}} <span class="half-size">{{deciseconds}}</span>
     </div>
     <button (click)="toggleStartStop()">
-      {{refreshTimer ? 'pause' : 'start'}}
+      {{refreshTimer ? 'Pause' : 'Start'}}
     </button>
     <button (click)="reset()" [disabled]="isReset()">Reset</button>
   `,
