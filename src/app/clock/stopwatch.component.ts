@@ -4,21 +4,17 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-stopwatch',
   template: `
     <div>
-      <label for="tenths"
-             [style.color]="intervalId ? 'DarkGray' : 'Black'">
+      <label for="tenths">
         10ths
       </label>
       <input (click)="fractionFormat = 'S'"
-             [disabled]="intervalId"
              id="tenths"
              type="radio"
              name="fraction">
-      <label for="humdredths"
-             [style.color]="intervalId ? 'DarkGray' : 'Black'">
+      <label for="hundredths">
         100ths
       </label>
       <input (click)="fractionFormat = 'SS'"
-             [disabled]="intervalId"
              id="hundredths"
              type="radio"
              name="fraction"
@@ -29,7 +25,7 @@ import { Component, OnInit } from '@angular/core';
       <span class="half-size">{{elapsed | date:fractionFormat}}</span>
     </h1>
     <button (click)="toggleStartStop()">
-      {{intervalId ? 'Pause' : 'Start'}}
+      {{isTimerRunning ? 'Pause' : 'Start'}}
     </button>
     <button (click)="reset()" [disabled]="totalMillis === 0">Reset</button>
   `,
@@ -39,8 +35,8 @@ export class StopwatchComponent implements OnInit {
 
   private previousMillis = 0;
   private currentMillis = 0;
+  private intervalId: number = null;
   private _fractionFormat: string;
-  private _intervalId: number = null;
 
   ngOnInit(): void {
     this.fractionFormat = 'SS';
@@ -60,14 +56,18 @@ export class StopwatchComponent implements OnInit {
 
   set fractionFormat(fractionFormat: string) {
     this._fractionFormat = fractionFormat;
+    if (this.intervalId) {
+      this.pause();
+      this.start();
+    }
   }
 
   get interval(): number {
     return this.fractionFormat === 'S' ? 100 : 10;
   }
 
-  get intervalId(): number {
-    return this._intervalId;
+  get isTimerRunning(): number {
+    return this.intervalId;
   }
 
   toggleStartStop(): void {
@@ -85,7 +85,7 @@ export class StopwatchComponent implements OnInit {
 
   private start(): void {
     const startMillis = this.nowMillis;
-    this._intervalId = window.setInterval(() => {
+    this.intervalId = window.setInterval(() => {
       this.currentMillis = this.nowMillis - startMillis;
     }, this.interval);
   }
@@ -96,8 +96,8 @@ export class StopwatchComponent implements OnInit {
   }
 
   private resetRefreshTimer(): void {
-    clearInterval(this._intervalId);
-    this._intervalId = null;
+    clearInterval(this.intervalId);
+    this.intervalId = null;
     this.currentMillis = 0;
   }
 
