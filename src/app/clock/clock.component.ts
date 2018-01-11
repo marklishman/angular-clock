@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-clock',
   template: `
-      {{date | date:'HH:mm:ss'}}
+      <h1>{{date | date:'HH:mm:ss'}}</h1>
   `
 })
 export class ClockComponent implements OnInit {

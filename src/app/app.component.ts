@@ -7,9 +7,9 @@ import {Component} from '@angular/core';
       <a routerLink="/clock" routerLinkActive="disabled">Clock</a> |
       <a routerLink="/stopwatch" routerLinkActive="disabled">Stopwatch</a>
     </p>
-    <h1>
+    <p>
       <router-outlet></router-outlet>
-    </h1>
+    </p>
   `,
   styles: [`
     .disabled {
