@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { StopwatchComponent } from './clock/stopwatch.component';
 import { StopwatchLiteComponent } from './clock/stopwatch-lite.component';
 import { StopwatchLiteParentComponent } from './clock/stopwatch-lite-parent.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { StopwatchLiteParentComponent } from './clock/stopwatch-lite-parent.comp
   ],
   imports: [
     AppRoutingModule,
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
