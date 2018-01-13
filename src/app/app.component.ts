@@ -5,7 +5,8 @@ import {Component} from '@angular/core';
   template: `
     <p>
       <a routerLink="/clock" routerLinkActive="disabled">Clock</a> |
-      <a routerLink="/stopwatch" routerLinkActive="disabled">Stopwatch</a>
+      <a routerLink="/stopwatch" routerLinkActive="disabled">Stopwatch</a> |
+      <a routerLink="/stopwatch-lite" routerLinkActive="disabled">Stopwatch Lite</a>
     </p>
     <p>
       <router-outlet></router-outlet>

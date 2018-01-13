@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
+enum FractionFormat {
+  TENTHS = 'S',
+  HUNDREDTHS = 'SS'
+}
 
 @Component({
   selector: 'app-stopwatch',
   template: `
     <div>
-      <label for="tenths">
-        10ths
-      </label>
-      <input (click)="fractionFormat = 'S'"
+      <input (click)="showTenths()"
              id="tenths"
              type="radio"
              name="fraction">
-      <label for="hundredths">
-        100ths
-      </label>
-      <input (click)="fractionFormat = 'SS'"
+      <label for="tenths">10ths</label>
+      <input (click)="showHundredths()"
              id="hundredths"
              type="radio"
              name="fraction"
              checked>
+      <label for="hundredths">100ths</label>
     </div>
     <h1>
       {{elapsed | date:'HH:mm:ss'}}
@@ -27,20 +28,16 @@ import { Component, OnInit } from '@angular/core';
     <button (click)="toggleStartStop()">
       {{isTimerRunning ? 'Pause' : 'Start'}}
     </button>
-    <button (click)="reset()" [disabled]="totalMillis === 0">Reset</button>
+    <button (click)="reset()" [disabled]="!totalMillis">Reset</button>
   `,
   styleUrls: ['./stopwatch.component.css']
 })
-export class StopwatchComponent implements OnInit {
+export class StopwatchComponent {
 
   private previousMillis = 0;
   private currentMillis = 0;
   private intervalId: number = null;
-  private _fractionFormat: string;
-
-  ngOnInit(): void {
-    this.fractionFormat = 'SS';
-  }
+  private _fractionFormat: FractionFormat = FractionFormat.HUNDREDTHS;
 
   get elapsed(): Date {
     return new Date(this.totalMillis);
@@ -50,36 +47,30 @@ export class StopwatchComponent implements OnInit {
     return this.previousMillis + this.currentMillis;
   }
 
-  get fractionFormat(): string {
+  get fractionFormat(): FractionFormat {
     return this._fractionFormat;
-  }
-
-  set fractionFormat(fractionFormat: string) {
-    this._fractionFormat = fractionFormat;
-    if (this.intervalId) {
-      this.pause();
-      this.start();
-    }
-  }
-
-  get interval(): number {
-    return this.fractionFormat === 'S' ? 100 : 10;
   }
 
   get isTimerRunning(): number {
     return this.intervalId;
   }
 
+  showTenths(): void {
+    this._fractionFormat = FractionFormat.TENTHS;
+    this.restartTimer();
+  }
+
+  showHundredths(): void {
+    this._fractionFormat = FractionFormat.HUNDREDTHS;
+    this.restartTimer();
+  }
+
   toggleStartStop(): void {
-    if (this.intervalId) {
-      this.pause();
-    } else {
-      this.start();
-    }
+    this.isTimerRunning ? this.stop() : this.start();
   }
 
   reset(): void {
-    this.resetRefreshTimer();
+    this.resetTimer();
     this.previousMillis = 0;
   }
 
@@ -90,15 +81,26 @@ export class StopwatchComponent implements OnInit {
     }, this.interval);
   }
 
-  private pause(): void {
+  private stop(): void {
     this.previousMillis += this.currentMillis;
-    this.resetRefreshTimer();
+    this.resetTimer();
   }
 
-  private resetRefreshTimer(): void {
+  private restartTimer(): void {
+    if (this.isTimerRunning) {
+      this.stop();
+      this.start();
+    }
+  }
+
+  private resetTimer(): void {
     clearInterval(this.intervalId);
     this.intervalId = null;
     this.currentMillis = 0;
+  }
+
+  private get interval(): number {
+    return this.fractionFormat === FractionFormat.TENTHS ? 100 : 10;
   }
 
   private get nowMillis(): number {
