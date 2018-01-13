@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 enum FractionFormat {
+  NONE,
   TENTHS = 'S',
   HUNDREDTHS = 'SS'
 }
@@ -9,6 +10,11 @@ enum FractionFormat {
   selector: 'app-stopwatch',
   template: `
     <div>
+      <input (click)="showNone()"
+             id="none"
+             type="radio"
+             name="fraction">
+      <label for="none">None</label>
       <input (click)="showTenths()"
              id="tenths"
              type="radio"
@@ -23,7 +29,10 @@ enum FractionFormat {
     </div>
     <h1>
       {{elapsed | date:'HH:mm:ss'}}
-      <span class="half-size">{{elapsed | date:fractionFormat}}</span>
+      <span *ngIf="showFractions"
+            class="half-size">
+        {{elapsed | date:fractionFormat}}
+      </span>
     </h1>
     <button (click)="toggleStartStop()">
       {{isTimerRunning ? 'Pause' : 'Start'}}
@@ -55,6 +64,10 @@ export class StopwatchComponent {
     return this.intervalId;
   }
 
+  get showFractions(): boolean {
+    return this.fractionFormat !== FractionFormat.NONE;
+  }
+
   showTenths(): void {
     this._fractionFormat = FractionFormat.TENTHS;
     this.restartTimer();
@@ -63,6 +76,10 @@ export class StopwatchComponent {
   showHundredths(): void {
     this._fractionFormat = FractionFormat.HUNDREDTHS;
     this.restartTimer();
+  }
+
+  showNone(): void {
+    this._fractionFormat = FractionFormat.NONE;
   }
 
   toggleStartStop(): void {
