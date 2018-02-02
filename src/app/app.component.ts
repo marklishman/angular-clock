@@ -1,13 +1,13 @@
-import {Component} from '@angular/core';
+import { Component, isDevMode } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   template: `
-    <p>
+    <header *ngIf="devMode">
       <a routerLink="/clock" routerLinkActive="disabled">Clock</a> |
       <a routerLink="/stopwatch" routerLinkActive="disabled">Stopwatch</a> |
       <a routerLink="/stopwatch-lite" routerLinkActive="disabled">Stopwatch Lite</a>
-    </p>
+    </header>
     <p>
       <router-outlet></router-outlet>
     </p>
@@ -21,4 +21,6 @@ import {Component} from '@angular/core';
     }`]
 })
 export class AppComponent {
+
+  devMode = isDevMode();
 }
