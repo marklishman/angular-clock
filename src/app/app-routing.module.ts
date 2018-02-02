@@ -10,7 +10,6 @@ const routes: Routes = [
   {path: '', redirectTo: '/clock', pathMatch: 'full'},
   {path: 'clock', component: ClockComponent},
   {path: 'stopwatch', component: StopwatchComponent},
-  {path: 'stopwatch', component: StopwatchComponent},
   {path: 'stopwatch-lite', component: StopwatchLiteParentComponent},
 ];
 
